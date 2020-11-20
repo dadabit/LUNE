@@ -6,13 +6,16 @@ def get_fps():
 
 
 pg.init()
-window = pg.display.set_mode((576, 1024))
+window = pg.display.set_mode((1100, 800))
 pg.display.set_caption('LUNE')
 clock = pg.time.Clock()
 
+# bg-----------------------------------------------------------------------------------------------------
+bg_surface = pg.image.load('background.png').convert()
+
 crashed = False
 
-java_surface = pg.image.load('black paint.png')
+
 
 
 
@@ -26,12 +29,11 @@ while not crashed:
 
     pg.display.update()
     clock.tick(120)
+    window.blit(bg_surface, (0, 0))
     fps = clock.get_fps()
-    window.blit(bgw, (0, 0))
 
 
 
-    window.blit(java_surface, (pg.mouse.get_pos()[0], pg.mouse.get_pos()[1]))
     get_fps()
 
 
