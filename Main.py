@@ -1,31 +1,39 @@
-import pygame
+import pygame as pg
 import sys
 
-pygame.init()
-window = pygame.display.set_mode((576, 1024))
-pygame.display.set_caption('LUNE')
-clock = pygame.time.Clock()
+def get_fps():
+    print(int(fps))
+
+
+pg.init()
+window = pg.display.set_mode((576, 1024))
+pg.display.set_caption('LUNE')
+clock = pg.time.Clock()
 
 crashed = False
 
-java_surface = pygame.image.load('OIP.xxoNYARhgoSrOw6GuCzE9AHaGQ.jpeg')
+java_surface = pg.image.load('black paint.png')
+
 
 
 while not crashed:
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
             quit()
             sys.exit()
 
-    pygame.display.update()
+    pg.display.update()
     clock.tick(120)
+    fps = clock.get_fps()
+    window.blit(bgw, (0, 0))
 
 
 
-    window.blit(java_surface, (0, 0))
-    print('hello world')
+    window.blit(java_surface, (pg.mouse.get_pos()[0], pg.mouse.get_pos()[1]))
+    get_fps()
+
 
 
 
