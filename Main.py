@@ -25,6 +25,7 @@ while not crashed:
 
 
     window.blit(java_surface, (0, 0))
+    print('hello world')
 
 
 
