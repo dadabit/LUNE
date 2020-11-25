@@ -8,7 +8,7 @@ movement = 0
 power = 5
 screen_shake = 0
 sky_offset = [0, 0]
-
+ground_offset = [0, 770]
 
 def get_fps():
     fps = clock.get_fps()
@@ -39,19 +39,32 @@ class Player():
 
     def __init__(self, life):
         self.life = life
-class Particles():
+class Particles:
     def __init__(self):
-        parti_list = []
+        self.parti_list = []
     def emit(self):
-        pass
+        if self.parti_list:
+            self.delete_parti()
+            for particle in self.parti_list:
+                particle[0][1] += particle[2]
+                particle[1] -= 0.15
+                pg.draw.circle(window, pg.Color('yellow'), particle[0], int(particle[1]))
+            
     def add(self):
-        pass
+        posx = Player.rocket[0] + 25
+        posy = Player.rocket[1] + 35
+        radius = 7
+        direction = random.randint(1, 2)
+        self.parti_list.append([[posx, posy], radius, direction])
     def delete_parti(self):
-        pass
-
+        particle_copy = [particle for particle in self.parti_list if particle[1] > 0]
+        self.parti_list = particle_copy
 crashed = False
 fule_OK = True
 player = Player(100)
+particle1 = Particles()
+PARTICLEEVENT = pg.USEREVENT + 1
+pg.time.set_timer(PARTICLEEVENT, 100)
 
 while not crashed:
 
@@ -64,18 +77,18 @@ while not crashed:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     movement = 0
-                    player.life -= 20
+                    player.life -= 5
                     movement -= power
                     screen_shake = 20
                     enginesound.play(0, 0, 1)
-
-
-
+            if event.type == PARTICLEEVENT:
+                particle1.add()
+            
     pg.display.update()
     clock.tick(120)
     movement += gravity
     player.rocket.centery += movement
-    grux -= 2
+
 
     if player.life <= 0:
         consolelog('燃料耗尽')
@@ -87,13 +100,12 @@ while not crashed:
     if screen_shake:
         sky_offset[0] = random.randint(0, 8) - 4
         sky_offset[1] = random.randint(0,10) - 4
-
-    if
-
-
+        ground_offset[0] = random.randint(0, 4) - 8
+        ground_offset[1] = random.randint(770, 775) - 2
     # blit
+
     window.blit(bg_surface, sky_offset)  # background
     window.blit(Player.rocket_surface, Player.rocket)
-    window.blit(moon_surface, (grux, 750))  # moon_surface
-    window.blit(moon_surface, (grux + 1100, 750))
-    #get_fps()
+    particle1.emit()
+    window.blit(moon_surface, ground_offset)  # moon_surface
+    # get_fps()
