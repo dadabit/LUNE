@@ -49,7 +49,6 @@ class Particles:
                 particle[0][1] += particle[2]
                 particle[1] -= 0.15
                 pg.draw.circle(window, pg.Color('yellow'), particle[0], int(particle[1]))
-            
     def add(self):
         posx = Player.rocket[0] + 25
         posy = Player.rocket[1] + 35
@@ -59,7 +58,6 @@ class Particles:
     def delete_parti(self):
         particle_copy = [particle for particle in self.parti_list if particle[1] > 0]
         self.parti_list = particle_copy
-
         
 crashed = False
 fule_OK = True
