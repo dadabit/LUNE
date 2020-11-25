@@ -59,6 +59,8 @@ class Particles:
     def delete_parti(self):
         particle_copy = [particle for particle in self.parti_list if particle[1] > 0]
         self.parti_list = particle_copy
+
+        
 crashed = False
 fule_OK = True
 player = Player(100)
