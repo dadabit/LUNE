@@ -53,7 +53,7 @@ class Particles:
             for particle in self.parti_list:
                 particle[0][1] += particle[2]
                 particle[1] -= 0.15
-                pg.draw.circle(window, pg.Color('yellow'), particle[0], int(particle[1]))
+                pg.draw.circle(window, pg.Color('white'), particle[0], int(particle[1]))
 
     def add(self):
         posx = Player.rocket[0] + 25
