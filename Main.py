@@ -58,7 +58,7 @@ class Particles:
     def add(self):
         posx = Player.rocket[0] + 25
         posy = Player.rocket[1] + 35
-        radius = 7
+        radius = 10
         direction = random.randint(1, 2)
         self.parti_list.append([[posx, posy], radius, direction])
 
