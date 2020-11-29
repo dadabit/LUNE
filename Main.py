@@ -3,8 +3,6 @@ import sys
 import random
 
 
-
-
 def get_fps():
     fps = clock.get_fps()
     print(int(fps))
@@ -23,6 +21,8 @@ clock = pg.time.Clock()
 bg_surface = pg.image.load('background.png').convert()
 # moon_surface--------------------------------------------------------------------------------------------
 moon_surface = pg.image.load('moon_surface.png').convert()
+#astroid---------------------------------------------------------------------------------------------------
+asto_surface = pg.image.load('astroid.png').convert()
 
 # sound----------------------------------------------------------------------------------------------
 enginesound = pg.mixer.Sound('enginefire.wav')
@@ -61,25 +61,50 @@ class Particles:
         particle_copy = [particle for particle in self.parti_list if particle[1] > 0]
         self.parti_list = particle_copy
 
+class Astroid:
+    def __init__(self, xspeed, yspeed):
+        self.astroList = []
+        self.xs = xspeed
+        self.ys = yspeed
 
+    def move(self):
+        if self.astroList:
+            self.delll()
+            for astro in self.astroList:
+                astro[0][0] += astro[1][0]
+                astro[0][1] += astro[1][1]
+                window.blit(asto_surface, (astro[0][0], astro[0][1]))
 
+    def add(self):
+        speed = [self.xs, self.ys]
+        posx = 0
+        posy = player.rocket[1]
+        self.astroList.append([[posx, posy], speed])
+
+    def delll(self):
+        pass
+
+player = Player(100)
 
 def main():
     # global variable
     gravity = 0.1
     movement = 0
-    power = 5
+    power = 7
     screen_shake = 0
     sky_offset = [0, 0]
     ground_offset = [0, 770]
 
     crashed = False
     fule_OK = True
-    player = Player(100)
+
     particle1 = Particles()
+    astroid1 = Astroid(7, 0.1)
 
     PARTICLEEVENT = pg.USEREVENT + 1
+    ASTROIDEVENT = pg.USEREVENT + 2
     pg.time.set_timer(PARTICLEEVENT, 100)
+    pg.time.set_timer(ASTROIDEVENT, 900)
 
     while not crashed:
 
@@ -98,9 +123,12 @@ def main():
                         enginesound.play(0, 0, 1)
                 if event.type == PARTICLEEVENT:
                     particle1.add()
+            if event.type == ASTROIDEVENT:
+                astroid1.add()
+
 
         pg.display.update()
-        clock.tick(60)
+        clock.tick(120)
         movement += gravity
         player.rocket.centery += movement
 
@@ -111,7 +139,9 @@ def main():
         if player.rocket[1] >= ground_offset[1]:
             explosionsound.play()
             pg.time.wait(900)
-
+            pg.quit()
+            quit()
+            sys.exit()
 
         if screen_shake > 0:
             screen_shake -= 1
@@ -127,10 +157,10 @@ def main():
         window.blit(bg_surface, sky_offset)  # background
         window.blit(Player.rocket_surface, Player.rocket)
         particle1.emit()
+        astroid1.move()
 
         window.blit(moon_surface, ground_offset)  # moon_surface
-        #get_fps()
+        get_fps()
 
 
-
-
+main()
